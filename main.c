@@ -47,6 +47,7 @@ int isEmpty();
 //******
 
 //FILE FUNCTIONS DECLARATION START
+void newRecord(FILE *fPtr);
 
 //FILE FUNCTIONS DECLARATION END
 
@@ -140,6 +141,19 @@ void enqueue()
 //****************
 
 //FILE FUNCTIONS DEFINTION START
+void newRecord(FILE *fPtr)
+{
+    struct Node *current = front;
+    int c2 = 1;
+    //fprintf(fPtr,"%-20s%-20s%3s%5s%10s%13s\n","First Name","Last Name","ID","Age","Salary","Phone Number");
+    while (current != NULL)
+    {
+        fprintf(fPtr, "%-20s%-20s%3d%5d%10d%13s\n", current->firstName, current->lastName, current->id, current->age, current->salary, current->phone);
+        current = current->nextPtr;
+        c2++;
+    }
+    printf("\nA total of %d was recorded into the file", c2);
+}
 
 //FILE FUNCTIONS DEFINITON END
 
