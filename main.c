@@ -41,6 +41,8 @@ int counter = 0;
 //QUEUE FUNCTIONS DECLARATION SECTION START
 void enqueue();
 int isEmpty();
+void dequeue();
+void display();
 
 //QUEUE FUNCTIONS DECLARATION SECTION END
 
@@ -128,7 +130,66 @@ void enqueue()
         rear = newNode;
     }
 }
+void dequeue()
+{
+    //Check if the queue is already empty
+    if (isEmpty())
+    {
+        printf("There is no employees to remove\n");
+    }
+    //if not
+    //Check if it's the last element in the queue
+    else if (rear == front)
+    {
+        counter--;
+        //make a placeholder pointer point to the node(the only node here)
+        //we want to delete
+        struct Node *placeHolder = rear;
+        //make front and rear point to NULL aka empty the queue
+        front = rear = NULL;
+        //free the space placeHolder was pointer at
+        free(placeHolder);
+    }
+    else
+    {
+        counter--;
+        //the queue is not empty and its not the last node
+        struct Node *placeHolder = front;
+        //use a place holder to store the address of the node
+        front = front->nextPtr;
+        //make front point at the next node
+        free(placeHolder);
+        //free the space used in the deleted node
+    }
+}
+void display()
+{
+    if (front == NULL)
+    {
+        printf("There are currently no registered employees\n");
+    }
+    else
+    {
+        struct Node *current = front;
+        int c2 = 1;
+        while (current != NULL)
+        {
+            printf("\n  Employee (%d) Data \n", c2);
+            printf("\n First name: %s", current->firstName);
+            printf("\n last Name: %s", current->lastName);
+            printf("\n ID: %d", current->id);
+            printf("\n age: %d", current->age);
+            printf("\n Phone number: %s", current->phone);
+            printf("\n Salary: %d", current->salary);
+            printf("\n\t\t-------------------\n");
+            current = current->nextPtr;
 
+            c2++;
+        }
+        printf("\n");
+        printf("\n");
+    }
+}
 //QUEUE FUNCTIONS DEFINTION END
 
 //****************
