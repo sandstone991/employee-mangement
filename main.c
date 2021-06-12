@@ -43,6 +43,7 @@ void enqueue();
 int isEmpty();
 void dequeue();
 void display();
+void reset();
 
 //QUEUE FUNCTIONS DECLARATION SECTION END
 
@@ -191,17 +192,61 @@ void display()
         printf("\n");
     }
 }
+void reset()
+{
+    //basically repeat the dequeue function till empty
+    while (1)
+    {
+        if (isEmpty())
+        {
+            break;
+        }
+
+        else if (rear == front)
+        {
+            struct Node *placeHolder = rear;
+            front = rear = NULL;
+            free(placeHolder);
+        }
+        else
+        {
+            struct Node *placeHolder = front;
+            front = front->nextPtr;
+            free(placeHolder);
+        }
+    }
+    //Clears the screen from any printed text
+    system("cls");
+}
 //QUEUE FUNCTIONS DEFINTION END
 
 //****************
 
 //MISC FUNCTIONS DEFINTION START
+void displayMenu()
+{
+    printf("\n Press 1 to add an empolyee ");
+    printf("\n press 2 to delete an emplyee");
+    printf("\n press 3 to display employee data");
+    printf("\n press 4 to rest the employee data");
+    printf("\n press 5 to open the records menu");
+    printf("\n press 6 to Exit");
+}
 
 //MISC FUNCTIONS DEFINITION END
 
 //****************
 
 //FILE FUNCTIONS DEFINTION START
+void fileDisplayMenu()
+{
+    puts("");
+    printf("\n Press 1 to Write from queue to file");
+    printf("\n press 2 to to read queue from file");
+    printf("\n press 3 to delete file's contents");
+    printf("\n press 4 to return to previous menu");
+    puts("");
+}
 void newRecord(FILE *fPtr)
 {
     struct Node *current = front;
