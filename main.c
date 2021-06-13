@@ -51,6 +51,8 @@ void reset();
 
 //FILE FUNCTIONS DECLARATION START
 void newRecord(FILE *fPtr);
+void readFromRecord(FILE *fPtr);
+void displayRecordContent(FILE *fPtr);
 void clearFile();
 
 
@@ -70,6 +72,87 @@ void clearFile();
 main()
 {
   
+    int choice1;
+    //Changes the console's color to green
+    system("color 0a");
+    //FILE stuff
+    FILE *cfPtr;
+    if ((cfPtr = fopen("employees.txt", "a")) == NULL)
+    {
+        puts("ERROR");
+        puts("File could not be opened.");
+    }
+    FILE *rfPtr;
+    if ((rfPtr = fopen("employees.txt", "r")) == NULL)
+    {
+        puts("ERROR");
+        puts("File could not be opened.");
+    }
+
+    {
+        //for quitting the while loop underneath
+        bool flag = 1;
+        while (flag == 1)
+        {
+            int flag1 = 1;
+            displayMenu();
+            int ch, val;
+            printf("\n Enter your choice: ");
+            scanf("%d", &ch);
+            switch (ch)
+            {
+            case 1:
+                enqueue();
+
+                break;
+            case 2:
+                dequeue();
+                break;
+            case 3:
+                display();
+                break;
+
+            case 4:
+                reset();
+                break;
+            case 5:
+
+                while (flag1)
+                {
+                    fileDisplayMenu();
+                    scanf("%d", &choice1);
+                    switch (choice1)
+                    {
+                    case 1:
+                        newRecord(cfPtr);
+                        break;
+                    case 2:
+                        readFromRecord(rfPtr);
+                        break;
+                    case 3:
+                        clearFile();
+                        break;
+                    case 4:
+                        flag1 = 0;
+                        break;
+                    default:
+                        puts("\n Enter a vaild number");
+                        break;
+                    }
+                }
+                break;
+            case 6:
+                printf("thank you for using our program :)");
+                flag = 0;
+                break;
+
+            default:
+                printf("\n error choose a correct number \n");
+            }
+        }
+        return 0;
+    }
+}
 }
 /***********************************************************************************************************************/
 //Functions definition
@@ -271,6 +354,52 @@ void clearFile()
         puts("File could not be opened.");
     }
 }
+void readFromRecord(FILE *fPtr)
+{
+    rewind(fPtr);
+    while (1)
+    {
+        counter++;
+        struct Node *newNode = malloc(sizeof(struct Node));
+        newNode->nextPtr = NULL;
+        fscanf(fPtr, "%s%s%d%d%d%s", &newNode->firstName, &newNode->lastName, &newNode->id, &newNode->age, &newNode->salary, &newNode->phone);
+        if (isEmpty())
+        {
+            front = rear = newNode;
+        }
+
+        else
+        {
+            rear->nextPtr = newNode;
+            rear = newNode;
+        }
+        if (!feof(fPtr))
+        {
+            break;
+        }
+    }
+}
+/*void displayRecordContent(FILE *fPtr){
+    rewind(fPtr);
+    printf("%-20s%-20s%-3s%-5s%-10s%-13s\n", "First Name", "Last Name", "ID", "Age", "Salary", "Phone Number");
+    while (1)
+    {struct Node dis;
+    char firstname[30];
+    char lastname[30];
+    char phone[30];
+    int id;
+    int age;
+    int salary;
+        fscanf(fPtr,"%s%s%d%d%d%s",firstname, lastname, &id, &age, &salary, phone);
+        printf("%-20s%-20s%-3s%-5s%-10s%-13s\n",firstname, lastname, id, age, salary, phone);
+        if (!feof(fPtr))
+        {
+            break;
+        }
+    }
+}*/
+//last function not working somewhy
+//will work on a fix later
 
 //FILE FUNCTIONS DEFINITON END
 
