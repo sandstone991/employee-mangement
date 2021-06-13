@@ -50,6 +50,8 @@ void display();
 
 //FILE FUNCTIONS DECLARATION START
 void newRecord(FILE *fPtr);
+void clearFile();
+
 
 //FILE FUNCTIONS DECLARATION END
 
@@ -214,6 +216,15 @@ void newRecord(FILE *fPtr)
         c2++;
     }
     printf("\nA total of %d was recorded into the file", c2);
+}
+void clearFile()
+{
+    FILE *dfPtr;
+    if ((dfPtr = fopen("employees.txt", "w")) == NULL)
+    {
+        puts("ERROR");
+        puts("File could not be opened.");
+    }
 }
 
 //FILE FUNCTIONS DEFINITON END
