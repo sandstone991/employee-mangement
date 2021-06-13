@@ -76,13 +76,20 @@ main()
     //Changes the console's color to green
     system("color 0a");
     //FILE stuff
+
     FILE *cfPtr;
+     // fopen() opens files "employees.txt". Exit program if unable to create/open file 
+    //takes two parameters the first one is the name of the file and the second is the type of operation on the file
+    // in this case its "a" meaning Open or create a file for writing at the end of the file—i.e., write operations append data to the file.
+    //refer to "c how to program by dietel p480 for a refresher"
     if ((cfPtr = fopen("employees.txt", "a")) == NULL)
     {
         puts("ERROR");
         puts("File could not be opened.");
     }
+    //this file pointer is used for reading unlike the previous one which was used for writing 
     FILE *rfPtr;
+    // fopen() opens files "employees.txt". Exit program if unable to open/access file 
     if ((rfPtr = fopen("employees.txt", "r")) == NULL)
     {
         puts("ERROR");
@@ -334,47 +341,72 @@ void fileDisplayMenu()
 }
 void newRecord(FILE *fPtr)
 {
+    //use the front of the queue to loop through the whole queue
     struct Node *current = front;
     int c2 = 1;
-    //fprintf(fPtr,"%-20s%-20s%3s%5s%10s%13s\n","First Name","Last Name","ID","Age","Salary","Phone Number");
+    //stop when you reach NULL aka the end of the queue
     while (current != NULL)
     {
+        //for every node inside the queue print into the file these things
         fprintf(fPtr, "%-20s%-20s%3d%5d%10d%13s\n", current->firstName, current->lastName, current->id, current->age, current->salary, current->phone);
+        //refer to the next node
         current = current->nextPtr;
+        //increment counter by 1 
+        //note that the counter isn't essential for the functions its just for aesthetic
         c2++;
     }
+    //use the counter to tell the user how many employees they've recorded into the file 
     printf("\nA total of %d was recorded into the file", c2);
 }
 void clearFile()
 {
+    //create a new pointer used to just point at the "emoloyee's.txt" file
     FILE *dfPtr;
+    //the idea of how this function work is just the paramater of fopen()
+    //"w" deletes any data that was in the file when the pointer is used to point at the file
+    //and as simple as that the file is cleared from any previous data
     if ((dfPtr = fopen("employees.txt", "w")) == NULL)
     {
+        //and just like before if for any reason the pointer can't reach the file
+        //print an error msg for the user
         puts("ERROR");
         puts("File could not be opened.");
     }
 }
 void readFromRecord(FILE *fPtr)
 {
+    //rewind function makes sure the pointer to the file is at the start of the file
     rewind(fPtr);
     while (1)
-    {
+    {   //this function reads the file contents and adds them to the current queue on the memory
+        
+        //this is the basically the enqueue function modified a little to fit in the file code synatx
+        
         counter++;
         struct Node *newNode = malloc(sizeof(struct Node));
         newNode->nextPtr = NULL;
         fscanf(fPtr, "%s%s%d%d%d%s", &newNode->firstName, &newNode->lastName, &newNode->id, &newNode->age, &newNode->salary, &newNode->phone);
+           //Check whether the queue is empty or not
         if (isEmpty())
         {
+             //Make the front pointer and rear pointer point to the newly added element
+        //which happens to be the FIRST ELEMENT
             front = rear = newNode;
         }
-
+        //if not
+    //Check if it's the last element in the queue
         else
         {
+         //assign the (next pointer) of the last element(previously last) of the queue to
+        //the newly added element of the queue
             rear->nextPtr = newNode;
+          //Make the rear point to that new element
             rear = newNode;
         }
+        //if End of file is met break from the whole function
         if (!feof(fPtr))
         {
+            
             break;
         }
     }
