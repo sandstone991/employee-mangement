@@ -53,7 +53,7 @@ void reset();
 void fileDisplayMenu();
 void newRecord(FILE *fPtr);
 void readFromRecord(FILE *fPtr);
-void displayRecordContent(FILE *fPtr);
+void displayRecordContent();
 void clearFile();
 
 
@@ -97,7 +97,7 @@ int main()
         puts("File could not be opened.");
     }
 
-    {
+    
         //for quitting the while loop underneath
         bool flag = 1;
         while (flag == 1)
@@ -140,8 +140,11 @@ int main()
                     case 3:
                         clearFile();
                         break;
-                    case 4:
-                        flag1 = 0;
+                     case 4:
+                        displayRecordContent();
+                        break;
+                     case 5:
+                     flag1 = 0;
                         break;
                     default:
                         puts("\n Enter a vaild number");
@@ -159,7 +162,7 @@ int main()
             }
         }
         return 0;
-    }
+    
 }
 /***********************************************************************************************************************/
 //Functions definition
@@ -336,14 +339,15 @@ void fileDisplayMenu()
     printf("\n Press 1 to Write from queue to file");
     printf("\n press 2 to to read queue from file");
     printf("\n press 3 to delete file's contents");
-    printf("\n press 4 to return to previous menu");
+    printf("\n press 4 to print file's contents on the screen");
+    printf("\n press 5 to return to previous menu");
     puts("");
 }
 void newRecord(FILE *fPtr)
 {
     //use the front of the queue to loop through the whole queue
     struct Node *current = front;
-    int c2 = 1;
+    int c2 = 0;
     //stop when you reach NULL aka the end of the queue
     while (current != NULL)
     {
@@ -411,25 +415,21 @@ void readFromRecord(FILE *fPtr)
         }
     }
 }
-/*void displayRecordContent(FILE *fPtr){
-    rewind(fPtr);
-    printf("%-20s%-20s%-3s%-5s%-10s%-13s\n", "First Name", "Last Name", "ID", "Age", "Salary", "Phone Number");
-    while (1)
-    {struct Node dis;
-    char firstname[30];
-    char lastname[30];
-    char phone[30];
-    int id;
-    int age;
-    int salary;
-        fscanf(fPtr,"%s%s%d%d%d%s",firstname, lastname, &id, &age, &salary, phone);
-        printf("%-20s%-20s%-3s%-5s%-10s%-13s\n",firstname, lastname, id, age, salary, phone);
-        if (!feof(fPtr))
-        {
-            break;
-        }
+void displayRecordContent(){
+      FILE *rfrPtr;
+    if ((rfrPtr = fopen("employees.txt", "r")) == NULL)
+    {
+        puts("ERROR");
+        puts("File could not be opened.");
     }
-}*/
+    char str[80];
+
+    printf("%-20s%-20s%3s%5s%10s%13s\n", "First Name", "Last Name", "ID", "Age", "Salary", "Phone Number");
+    while( (fgets(str, 72, rfrPtr)) != NULL )
+  {
+    printf("%s", str);
+  }
+}
 //last function not working somewhy
 //will work on a fix later
 
