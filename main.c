@@ -50,6 +50,7 @@ void reset();
 //******
 
 //FILE FUNCTIONS DECLARATION START
+void fileDisplayMenu();
 void newRecord(FILE *fPtr);
 void readFromRecord(FILE *fPtr);
 void displayRecordContent(FILE *fPtr);
@@ -61,7 +62,7 @@ void clearFile();
 //******
 
 //MISC FUNCTION DECLARATION START
-
+void displayMenu();
 //MISC FUNCTION DECLARATION END
 
 //******
@@ -69,7 +70,7 @@ void clearFile();
 /***********************************************************************************************************************/
 //Main funtion
 
-main()
+int main()
 {
   
     int choice1;
@@ -435,7 +436,6 @@ void readFromRecord(FILE *fPtr)
 //FILE FUNCTIONS DEFINITON END
 
 //****************
-
 
 
 
