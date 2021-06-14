@@ -376,6 +376,9 @@ void clearFile()
         puts("ERROR");
         puts("File could not be opened.");
     }
+        else{
+        puts("File cleared successfully.");
+    }
 }
 void readFromRecord(FILE *fPtr)
 {
