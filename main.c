@@ -63,7 +63,9 @@ void clearFile();
 //MISC FUNCTION DECLARATION START
 void displayMenu();
 //MISC FUNCTION DECLARATION END
-
+//SEARCH FUNCTION DECLARATION START
+void searchByIdInQueue();
+//SEARCH FUNCTION DECLARATION END
 //******
 
 /***********************************************************************************************************************/
@@ -109,7 +111,7 @@ int main()
             switch (ch)
             {
             case 1:
-                enqueue();
+                enqueue(cfPtr);
 
                 break;
             case 2:
@@ -123,6 +125,9 @@ int main()
                 reset();
                 break;
             case 5:
+                searchByIdInQueue();
+                break;
+            case 6:
 
                 while (flag1)
                 {
@@ -151,11 +156,10 @@ int main()
                     }
                 }
                 break;
-            case 6:
+            case 7:
                 printf("thank you for using our program :)");
                 flag = 0;
                 break;
-
             default:
                 printf("\n error choose a correct number \n");
             }
@@ -431,6 +435,34 @@ void displayRecordContent(){
 
 //FILE FUNCTIONS DEFINITON END
 
+//SEARCH FUNCTION START
+void searchByIdInQueue(){
+    struct Node *search = front;
+    int ID;
+    printf("Enter the Id :\n");
+    scanf("%d" , &ID);
+    while ( search != NULL ){
+
+        if ( search->id == ID )
+        {   
+            printf("\nThe queue is found.\n");
+            printf("\n First name: %s", search->firstName);
+            printf("\n last Name: %s", search->lastName);
+            printf("\n ID: %d", search->id);
+            printf("\n age: %d", search->age);
+            printf("\n Phone number: %s", search->phone);
+            printf("\n Salary: %d", search->salary);
+            printf("\n\t\t-------------------\n");
+            return;
+        }
+        else
+        {
+            search = search->nextPtr;
+        }
+    }
+    printf("Id could not be found in the queue");
+}
+//SEARCH FUNCTION END
 //****************
 
 
