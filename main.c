@@ -382,7 +382,7 @@ void readFromRecord(FILE *fPtr)
 {
     //rewind function makes sure the pointer to the file is at the start of the file
     rewind(fPtr);
-    while (1)
+    while (!feof(fPtr))
     {   //this function reads the file contents and adds them to the current queue on the memory
         
         //this is the basically the enqueue function modified a little to fit in the file code synatx
@@ -408,21 +408,18 @@ void readFromRecord(FILE *fPtr)
           //Make the rear point to that new element
             rear = newNode;
         }
-        //if End of file is met break from the whole function
-        if (!feof(fPtr))
-        {
-            
-            break;
-        }
     }
 }
 void displayRecordContent(){
+    //this function takes a whole line from the employee's text document and prints it on the screen
       FILE *rfrPtr;
     if ((rfrPtr = fopen("employees.txt", "r")) == NULL)
     {
         puts("ERROR");
         puts("File could not be opened.");
     }
+    //A string with a size > 72. meaning that the number 80 is just an arbitrary bigger than 72
+    //note that 72 is the line length in a text document
     char str[80];
 
     printf("%-20s%-20s%3s%5s%10s%13s\n", "First Name", "Last Name", "ID", "Age", "Salary", "Phone Number");
