@@ -16,8 +16,7 @@ struct Node
     int age;
     int salary;
     char phone[13];
-    //It's possible that I may add more data later so Remeber to change the arguments
-    //of the functions that takes in the data
+
     //DATA SECTION END
     //**********************************************************************************************************************************************************
     //LINKED LIST QUEUE STUFF START
@@ -208,8 +207,7 @@ void enqueue()
     scanf("%d", &newNode->salary);
     puts("");
 
-    //we'll add the rest of data later for now lets work on the queue part
-    //PLEASE REMOVE THESE COMMENTS
+ 
     //Check whether the queue is empty or not
     if (isEmpty())
     {
@@ -433,8 +431,6 @@ void displayRecordContent(){
     printf("%s", str);
   }
 }
-//last function not working somewhy
-//will work on a fix later
 
 //FILE FUNCTIONS DEFINITON END
 
