@@ -326,8 +326,9 @@ void displayMenu()
     printf("\n press 2 to delete an emplyee");
     printf("\n press 3 to display employee data");
     printf("\n press 4 to rest the employee data");
-    printf("\n press 5 to open the records menu");
-    printf("\n press 6 to Exit");
+    printf("\n press 5 to search in queue by ID");
+    printf("\n press 6 to open the records menu");
+    printf("\n press 7 to Exit");
 }
 
 //MISC FUNCTIONS DEFINITION END
