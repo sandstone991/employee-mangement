@@ -369,60 +369,63 @@ bool isAlreadyInQueue(int ID){
      return false;
 }
 void modifyEmployee(){
-printf("\nPlease enter the employee's ID");
-printf("\nID: ");
-int id;
-scanf("%d",&id);
-if(searchByIdInQueue(id))
-{
-    bringMeTheEmployee(id);
-    printf("\n What do you want to modify\n");
-    int flag=1;
-    while(flag){
-    int choice=1;
-    printf("\n Press 1 to modify first name");
-    printf("\n Press 2 to modify last name");
-    printf("\n Press 3 to modify Salary");
-    printf("\n Press 4 to modify Phone Number");
-    printf("\n Press 5 to modify Age");
-    printf("\n Press 6 to Exit to the previous menu");
-    printf("\n Your choice: ");
-    scanf("%d",&choice);
-    switch(choice){
-          case 1:
-            printf("\nFirst name: ");
-            scanf("%19s", &searchingNode->firstName);
-            puts("");
+    printf("\nPlease enter the employee's ID");
+    printf("\nID: ");
+    int id;
+        id = getIntegerOnly();
+        fflush(stdin);
+    if(searchByIdInQueue(id))
+    {   
+        bringMeTheEmployee(id);
+        printf("\n What do you want to modify\n");
+        int flag=1;
+        while(flag){
+        int choice=1;
+        printf("\n Press 1 to modify first name");
+        printf("\n Press 2 to modify last name");
+        printf("\n Press 3 to modify Salary");
+        printf("\n Press 4 to modify Phone Number");
+        printf("\n Press 5 to modify Age");
+        printf("\n Press 6 to Exit to the previous menu");
+        printf("\n Your choice: ");
+        scanf("%d",&choice);
+        switch(choice){
+            case 1:
+                printf("\nFirst name: ");
+                scanf("%19s", &searchingNode->firstName);
+                puts("");
 
-                break;
-            case 2:
-            printf("\nLast name: ");
-            scanf("%19s", &searchingNode->lastName);
-            puts("");
-                break;
-            case 3:
-            printf("\nSalary: ");
-            scanf("%d", &searchingNode->salary);
-            puts("");
-                break;
-
-            case 4:
-            printf("\nPhone number: ");
-            scanf("%12s", &searchingNode->phone);
-            puts("");
-
-                break;
-            case 5:
-            printf("\nAge: ");
-            scanf("%d", &searchingNode->age);
-                break;
-            case 6:
-                flag=0;
-                break;
-            default:
-                printf("\nPlease enter a valid number");
-                break;}}}
-                else{return;}}
+                    break;
+                case 2:
+                printf("\nLast name: ");
+                scanf("%19s", &searchingNode->lastName);
+                puts("");
+                    break;
+                case 3:
+                printf("\nSalary: ");
+                    searchingNode->salary = getIntegerOnly();
+                puts("");
+                    break;
+                case 4:
+                printf("\nPhone number: ");
+                scanf("%12s", &searchingNode->phone);
+                puts("");
+                    break;
+                case 5:
+                printf("\nAge: ");
+                    searchingNode->age = getIntegerOnly();
+                    break;
+                case 6:
+                    flag=0;
+                    break;
+                default:
+                    printf("\nPlease enter a valid number");
+                    break;}}}
+                else
+                {
+                    return;
+                }
+    }
 void bringMeTheEmployee(int ID){
 searchingNode = front;
      while ( searchingNode != NULL ){
