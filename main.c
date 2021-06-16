@@ -465,14 +465,27 @@ void fileDisplayMenu()
 }
 void newRecord(FILE *fPtr)
 {
+
     //use the front of the queue to loop through the whole queue
     struct Node *current = front;
     int c2 = 0;
     //stop when you reach NULL aka the end of the queue
+      if (NULL != fPtr) {
+    fseek (fPtr, 0, SEEK_END);
+    int size = ftell(fPtr);
+
+    if (0 == size) {
+            if(current!=NULL){
+                 fprintf(fPtr, "%-20s%-20s%3d%5d%10d%13s", current->firstName, current->lastName, current->id, current->age, current->salary, current->phone);
+                  current = current->nextPtr;
+                   c2++;
+            }
+    }
+}
     while (current != NULL)
     {
         //for every node inside the queue print into the file these things
-        fprintf(fPtr, "%-20s%-20s%3d%5d%10d%13s\n", current->firstName, current->lastName, current->id, current->age, current->salary, current->phone);
+        fprintf(fPtr, "\n%-20s%-20s%3d%5d%10d%13s", current->firstName, current->lastName, current->id, current->age, current->salary, current->phone);
         //refer to the next node
         current = current->nextPtr;
         //increment counter by 1
