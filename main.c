@@ -421,12 +421,13 @@ searchingNode = front;
      while ( searchingNode != NULL ){
 
         if ( searchingNode->id == ID ){
-                return;
+                return 1;
         }
           else
         {searchingNode = searchingNode->nextPtr;}
         }
 searchingNode=NULL;
+    return 0;
      }
 
 bool DeleteByIdInQueue(int ID){
