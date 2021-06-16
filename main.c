@@ -43,8 +43,10 @@ int isEmpty();
 void dequeue();
 void display();
 void reset();
-void searchByIdInQueue();
+bool searchByIdInQueue(int ID);
 bool isAlreadyInQueue(int ID);
+struct Node* bringMeTheEmployee(int ID);
+void modifyEmployee();
 //QUEUE FUNCTIONS DECLARATION SECTION END
 
 //******
@@ -124,13 +126,20 @@ int main()
                 reset();
                 break;
             case 5:
-                searchByIdInQueue();
+                printf("Enter the Id :\n");
+                int ID;
+                scanf("%d" , &ID);
+                searchByIdInQueue(ID);
                 break;
             case 6:
+                modifyEmployee();
+                break;
+            case 7:
 
                 while (flag1)
                 {
                     fileDisplayMenu();
+                    printf(" Your choice: ");
                     scanf("%d", &choice1);
                     switch (choice1)
                     {
@@ -155,7 +164,7 @@ int main()
                     }
                 }
                 break;
-            case 7:
+            case 8:
                 printf("thank you for using our program :)");
                 flag = 0;
                 break;
@@ -316,16 +325,14 @@ void reset()
     //Clears the screen from any printed text
     system("cls");
 }
-void searchByIdInQueue(){
+bool searchByIdInQueue(int ID){
     struct Node *search = front;
-    int ID;
-    printf("Enter the Id :\n");
-    scanf("%d" , &ID);
     while ( search != NULL ){
 
         if ( search->id == ID )
         {
-            printf("\nThe queue is found.\n");
+            printf("\nEmployee Found.\n");
+            printf("\n\t\t-------------------\n");
             printf("\n First name: %s", search->firstName);
             printf("\n last Name: %s", search->lastName);
             printf("\n ID: %d", search->id);
@@ -333,7 +340,7 @@ void searchByIdInQueue(){
             printf("\n Phone number: %s", search->phone);
             printf("\n Salary: %d", search->salary);
             printf("\n\t\t-------------------\n");
-            return;
+            return true;
         }
         else
         {
@@ -341,6 +348,7 @@ void searchByIdInQueue(){
         }
     }
     printf("Id could not be found in the queue");
+    return false;
 }
 bool isAlreadyInQueue(int ID){
     struct Node *search = front;
@@ -351,11 +359,84 @@ bool isAlreadyInQueue(int ID){
                 return true;
         }
         else
-        {return false;}
+        {search = search->nextPtr;}
      }
+     return false;
 }
+void modifyEmployee(){
+printf("\nPlease enter the employee's ID");
+printf("\nID: ");
+int id;
+scanf("%d",&id);
+if(searchByIdInQueue(id))
+{   struct Node *toBeModified = bringMeTheEmployee(id);
+    searchByIdInQueue(id);
+    printf("\n What do you want to modify\n");
+    int flag=1;
+    while(flag){
+    int choice=0;
+    printf("\n Press 1 to modify first name");
+    printf("\n Press 2 to modify last name");
+    printf("\n Press 3 to modify Salary");
+    printf("\n Press 4 to modify Phone Number");
+    printf("\n Press 5 to modify Age");
+    printf("\n Press 6 to Exit to the previous menu");
+    printf("\n Your choice: ");
+    scanf("%d",choice);
+    switch(choice){
+          case 1:
+            printf("\nFirst name: ");
+            scanf("%19s", &toBeModified->firstName);
+            puts("");
 
 
+                break;
+            case 2:
+            printf("\nLast name: ");
+            scanf("%19s", &toBeModified->lastName);
+            puts("");
+                break;
+            case 3:
+            printf("\nSalary: ");
+            scanf("%d", &toBeModified->salary);
+            puts("");
+                break;
+
+            case 4:
+            printf("\nPhone number: ");
+            scanf("%12s", &toBeModified->phone);
+            puts("");
+
+                break;
+            case 5:
+            printf("\nAge: ");
+            scanf("%d", &toBeModified->age);
+                break;
+            case 6:
+                flag=0;
+                break;
+            default:
+                printf("\nPlease enter a valid number");
+                break;
+}
+}
+}
+else{
+    printf("\nEmployee was not found\n");
+}
+}
+struct Node* bringMeTheEmployee(int ID){
+struct Node *search = front;
+     while ( search != NULL ){
+
+        if ( search->id == ID ){
+                printf("\nThis ID has already been used please choose another one\n");
+                return search;
+        }
+        else
+        {return NULL;}
+     }
+};
 //QUEUE FUNCTIONS DEFINTION END
 
 //****************
@@ -368,8 +449,9 @@ void displayMenu()
     printf("\n press 3 to display employee data");
     printf("\n press 4 to rest the employee data");
     printf("\n press 5 to search in queue by ID");
-    printf("\n press 6 to open the records menu");
-    printf("\n press 7 to Exit");
+    printf("\n press 6 to Modify an employee's data");
+    printf("\n press 7 to open the records menu");
+    printf("\n press 8 to Exit");
 }
 
 //MISC FUNCTIONS DEFINITION END
@@ -428,12 +510,14 @@ void readFromRecord(FILE *fPtr)
 {
     //rewind function makes sure the pointer to the file is at the start of the file
     rewind(fPtr);
+    int counter1=0;
     while (!feof(fPtr))
     {   //this function reads the file contents and adds them to the current queue on the memory
 
         //this is the basically the enqueue function modified a little to fit in the file code synatx
 
         counter++;
+        counter1++;
         struct Node *newNode = malloc(sizeof(struct Node));
         newNode->nextPtr = NULL;
         fscanf(fPtr, "%s%s%d%d%d%s", &newNode->firstName, &newNode->lastName, &newNode->id, &newNode->age, &newNode->salary, &newNode->phone);
@@ -454,7 +538,9 @@ void readFromRecord(FILE *fPtr)
           //Make the rear point to that new element
             rear = newNode;
         }
+
     }
+      printf("\nA total of %d Employees was copied from the file to the memory\n",counter1);
 }
 void displayRecordContent(){
     //this function takes a whole line from the employee's text document and prints it on the screen
@@ -467,14 +553,14 @@ void displayRecordContent(){
     //A string with a size > 72. meaning that the number 80 is just an arbitrary bigger than 72
     //note that 72 is the line length in a text document
     char str[80];
-
+    printf("\n----------------------------------------------------------------------------\n");
     printf("%-20s%-20s%3s%5s%10s%13s\n", "First Name", "Last Name", "ID", "Age", "Salary", "Phone Number");
     while( (fgets(str, 72, rfrPtr)) != NULL )
   {
     printf("%s", str);
   }
+  printf("\n----------------------------------------------------------------------------\n");
 }
 
 //FILE FUNCTIONS DEFINITON END
-
 
