@@ -446,7 +446,7 @@ bool DeleteByIdInQueue(int ID){
             if(front->id==ID)
             {
                 dequeue();
-                return;
+                return 1;
             }
         if(rear->id==ID){
                 for(int i=0;i<counter-2;i++){
@@ -457,7 +457,7 @@ bool DeleteByIdInQueue(int ID){
                 free(temp);
                 index->nextPtr=NULL;
                 counter--;
-                return;
+                return 1;
 
         }
 
@@ -469,7 +469,7 @@ bool DeleteByIdInQueue(int ID){
            before->nextPtr=after;
            free(temp);
            counter--;
-           return;
+           return 1;
         }
         else
         {
