@@ -46,8 +46,9 @@ void display();
 void reset();
 bool searchByIdInQueue(int ID);
 bool isAlreadyInQueue(int ID);
-void bringMeTheEmployee(int ID);
+int bringMeTheEmployee(int ID);
 void modifyEmployee();
+bool DeleteByIdInQueue(int ID);
 //QUEUE FUNCTIONS DECLARATION SECTION END
 
 //******
@@ -82,27 +83,8 @@ int main()
     //Changes the console's color to green
     system("color 0a");
     //FILE stuff
-
-    FILE *cfPtr;
-     // fopen() opens files "employees.txt". Exit program if unable to create/open file
-    //takes two parameters the first one is the name of the file and the second is the type of operation on the file
-    // in this case its "a" meaning Open or create a file for writing at the end of the file—i.e., write operations append data to the file.
-    //refer to "c how to program by dietel p480 for a refresher"
-    if ((cfPtr = fopen("employees.txt", "a")) == NULL)
-    {
-        puts("ERROR");
-        puts("File could not be opened.");
-    }
-    //this file pointer is used for reading unlike the previous one which was used for writing
-    FILE *rfPtr;
-    // fopen() opens files "employees.txt". Exit program if unable to open/access file
-    if ((rfPtr = fopen("employees.txt", "r")) == NULL)
-    {
-        puts("ERROR");
-        puts("File could not be opened.");
-    }
-
-
+     FILE *cfPtr;
+     FILE  *rfPtr;
         //for quitting the while loop underneath
         bool flag = 1;
         while (flag == 1)
@@ -139,6 +121,13 @@ int main()
                 break;
             case 7:
 
+            printf("\n Enter the Id :");
+
+             scanf("%d" , &ID);
+            DeleteByIdInQueue(ID);
+            break;
+            case 8:
+
                 while (flag1)
                 {
                     fileDisplayMenu();
@@ -167,7 +156,7 @@ int main()
                     }
                 }
                 break;
-            case 8:
+            case 9:
                 printf("thank you for using our program :)");
                 flag = 0;
                 break;
@@ -328,6 +317,7 @@ void reset()
         }
     }
     //Clears the screen from any printed text
+    counter=0;
     system("cls");
 }
 bool searchByIdInQueue(int ID){
@@ -426,7 +416,7 @@ void modifyEmployee(){
                     return;
                 }
     }
-void bringMeTheEmployee(int ID){
+int bringMeTheEmployee(int ID){
 searchingNode = front;
      while ( searchingNode != NULL ){
 
@@ -438,6 +428,59 @@ searchingNode = front;
         }
 searchingNode=NULL;
      }
+
+bool DeleteByIdInQueue(int ID){
+    struct Node *index = front;
+    struct Node *before=NULL;
+    struct Node *after=NULL;
+    struct Node *temp=NULL;
+
+    if(isEmpty()){
+        printf("There is no data found");
+        return 0;
+    }
+    if(bringMeTheEmployee(ID)){
+
+    while ( index != NULL )
+        {
+            if(front->id==ID)
+            {
+                dequeue();
+                return;
+            }
+        if(rear->id==ID){
+                for(int i=0;i<counter-2;i++){
+                    index=index->nextPtr;
+                }
+                temp=rear;
+                rear=index;
+                free(temp);
+                index->nextPtr=NULL;
+                counter--;
+                return;
+
+        }
+
+        if ( index->nextPtr->id== ID )
+        {
+           before=index;
+           after=before->nextPtr->nextPtr;
+           temp=before->nextPtr;
+           before->nextPtr=after;
+           free(temp);
+           counter--;
+           return;
+        }
+        else
+        {
+            index = index->nextPtr;
+        }
+    }
+    }
+    printf("Id could not be found in the queue");
+    return 0;
+}
+
 //QUEUE FUNCTIONS DEFINTION END
 
 //****************
@@ -451,8 +494,9 @@ void displayMenu()
     printf("\n press 4 to rest the employee data");
     printf("\n press 5 to search in queue by ID");
     printf("\n press 6 to Modify an employee's data");
-    printf("\n press 7 to open the records menu");
-    printf("\n press 8 to Exit");
+    printf("\n press 7 to Delete employee by ID");
+    printf("\n press 8 to open the records menu");
+    printf("\n press 9 to Exit");
 }
 
 //MISC FUNCTIONS DEFINITION END
@@ -471,7 +515,18 @@ void fileDisplayMenu()
     puts("");
 }
 void newRecord(FILE *fPtr)
-{
+{   
+    // fopen() opens files "employees.txt". Exit program if unable to create/open file
+    //takes two parameters the first one is the name of the file and the second is the type of operation on the file
+    // in this case its "a" meaning Open or create a file for writing at the end of the file—i.e., write operations append data to the file.
+    //refer to "c how to program by dietel p480 for a refresher"
+    if ((fPtr = fopen("employees.txt", "a")) == NULL)
+    {
+        puts("ERROR");
+        puts("File could not be opened.");
+    }
+    //this file pointer is used for reading unlike the previous one which was used for writing
+
 
     //use the front of the queue to loop through the whole queue
     struct Node *current = front;
@@ -501,6 +556,7 @@ void newRecord(FILE *fPtr)
     }
     //use the counter to tell the user how many employees they've recorded into the file
     printf("\nA total of %d was recorded into the file", c2);
+    fclose(fPtr);
 }
 void clearFile()
 {
@@ -519,9 +575,18 @@ void clearFile()
         else{
         puts("File cleared successfully.");
     }
+    fclose(dfPtr);
 }
 void readFromRecord(FILE *fPtr)
 {
+        // fopen() opens files "employees.txt". Exit program if unable to open/access file
+    if ((fPtr = fopen("employees.txt", "r")) == NULL)
+    {
+        puts("ERROR");
+        puts("File could not be opened.");
+    }
+
+    //rewind function makes sure the pointer to the file is at the start of the file
     //rewind function makes sure the pointer to the file is at the start of the file
     rewind(fPtr);
     int counter1=0;
@@ -555,6 +620,7 @@ void readFromRecord(FILE *fPtr)
 
     }
       printf("\nA total of %d Employees was copied from the file to the memory\n",counter1);
+        fclose(fPtr);
 }
 void displayRecordContent(){
     //this function takes a whole line from the employee's text document and prints it on the screen
@@ -574,6 +640,7 @@ void displayRecordContent(){
     printf("%s", str);
   }
   printf("\n----------------------------------------------------------------------------\n");
+    fclose(rfrPtr);
 }
 
 //FILE FUNCTIONS DEFINITON END
@@ -584,7 +651,7 @@ int getIntegerOnly(){
         ch=getch();
         if (ch>=48 && ch<=57)
         {
-            printf("%c",ch);
+            printf("%c\n",ch);
             num=num*10 + (ch-48);
 
         }
