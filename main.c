@@ -659,7 +659,8 @@ int getIntegerOnly(){
         {
             break;
         }
-    }while (1);    
+    }while (1);  
+    puts(" ");
     return num;
     
 }
