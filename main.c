@@ -25,7 +25,7 @@ struct Node
 };
 
 /***********************************************************************************************************************/
-//Declare gloabal variables 
+//Declare gloabal variables
 //Intializing two global pointer to a struct of type Node to act as out front and rear because they'll be used thoroughly
 struct Node *front = NULL;
 struct Node *rear = NULL;
@@ -43,7 +43,8 @@ int isEmpty();
 void dequeue();
 void display();
 void reset();
-
+void searchByIdInQueue();
+bool isAlreadyInQueue(int ID);
 //QUEUE FUNCTIONS DECLARATION SECTION END
 
 //******
@@ -63,9 +64,7 @@ void clearFile();
 //MISC FUNCTION DECLARATION START
 void displayMenu();
 //MISC FUNCTION DECLARATION END
-//SEARCH FUNCTION DECLARATION START
-void searchByIdInQueue();
-//SEARCH FUNCTION DECLARATION END
+
 //******
 
 /***********************************************************************************************************************/
@@ -73,14 +72,14 @@ void searchByIdInQueue();
 
 int main()
 {
-  
+
     int choice1;
     //Changes the console's color to green
     system("color 0a");
     //FILE stuff
 
     FILE *cfPtr;
-     // fopen() opens files "employees.txt". Exit program if unable to create/open file 
+     // fopen() opens files "employees.txt". Exit program if unable to create/open file
     //takes two parameters the first one is the name of the file and the second is the type of operation on the file
     // in this case its "a" meaning Open or create a file for writing at the end of the file—i.e., write operations append data to the file.
     //refer to "c how to program by dietel p480 for a refresher"
@@ -89,16 +88,16 @@ int main()
         puts("ERROR");
         puts("File could not be opened.");
     }
-    //this file pointer is used for reading unlike the previous one which was used for writing 
+    //this file pointer is used for reading unlike the previous one which was used for writing
     FILE *rfPtr;
-    // fopen() opens files "employees.txt". Exit program if unable to open/access file 
+    // fopen() opens files "employees.txt". Exit program if unable to open/access file
     if ((rfPtr = fopen("employees.txt", "r")) == NULL)
     {
         puts("ERROR");
         puts("File could not be opened.");
     }
 
-    
+
         //for quitting the while loop underneath
         bool flag = 1;
         while (flag == 1)
@@ -165,7 +164,7 @@ int main()
             }
         }
         return 0;
-    
+
 }
 /***********************************************************************************************************************/
 //Functions definition
@@ -198,8 +197,10 @@ void enqueue()
     printf("Last name: ");
     scanf("%19s", &newNode->lastName);
     puts("");
+    do{
     printf("ID: ");
-    scanf("%d", &newNode->id);
+    scanf("%d", &newNode->id);}
+    while(isAlreadyInQueue(newNode->id));
     puts("");
     printf("Age: ");
     scanf("%d", &newNode->age);
@@ -211,7 +212,7 @@ void enqueue()
     scanf("%d", &newNode->salary);
     puts("");
 
- 
+
     //Check whether the queue is empty or not
     if (isEmpty())
     {
@@ -315,6 +316,46 @@ void reset()
     //Clears the screen from any printed text
     system("cls");
 }
+void searchByIdInQueue(){
+    struct Node *search = front;
+    int ID;
+    printf("Enter the Id :\n");
+    scanf("%d" , &ID);
+    while ( search != NULL ){
+
+        if ( search->id == ID )
+        {
+            printf("\nThe queue is found.\n");
+            printf("\n First name: %s", search->firstName);
+            printf("\n last Name: %s", search->lastName);
+            printf("\n ID: %d", search->id);
+            printf("\n age: %d", search->age);
+            printf("\n Phone number: %s", search->phone);
+            printf("\n Salary: %d", search->salary);
+            printf("\n\t\t-------------------\n");
+            return;
+        }
+        else
+        {
+            search = search->nextPtr;
+        }
+    }
+    printf("Id could not be found in the queue");
+}
+bool isAlreadyInQueue(int ID){
+    struct Node *search = front;
+     while ( search != NULL ){
+
+        if ( search->id == ID ){
+                printf("\nThis ID has already been used please choose another one\n");
+                return true;
+        }
+        else
+        {return false;}
+     }
+}
+
+
 //QUEUE FUNCTIONS DEFINTION END
 
 //****************
@@ -358,11 +399,11 @@ void newRecord(FILE *fPtr)
         fprintf(fPtr, "%-20s%-20s%3d%5d%10d%13s\n", current->firstName, current->lastName, current->id, current->age, current->salary, current->phone);
         //refer to the next node
         current = current->nextPtr;
-        //increment counter by 1 
+        //increment counter by 1
         //note that the counter isn't essential for the functions its just for aesthetic
         c2++;
     }
-    //use the counter to tell the user how many employees they've recorded into the file 
+    //use the counter to tell the user how many employees they've recorded into the file
     printf("\nA total of %d was recorded into the file", c2);
 }
 void clearFile()
@@ -389,9 +430,9 @@ void readFromRecord(FILE *fPtr)
     rewind(fPtr);
     while (!feof(fPtr))
     {   //this function reads the file contents and adds them to the current queue on the memory
-        
+
         //this is the basically the enqueue function modified a little to fit in the file code synatx
-        
+
         counter++;
         struct Node *newNode = malloc(sizeof(struct Node));
         newNode->nextPtr = NULL;
@@ -435,36 +476,5 @@ void displayRecordContent(){
 }
 
 //FILE FUNCTIONS DEFINITON END
-
-//SEARCH FUNCTION START
-void searchByIdInQueue(){
-    struct Node *search = front;
-    int ID;
-    printf("Enter the Id :\n");
-    scanf("%d" , &ID);
-    while ( search != NULL ){
-
-        if ( search->id == ID )
-        {   
-            printf("\nThe queue is found.\n");
-            printf("\n First name: %s", search->firstName);
-            printf("\n last Name: %s", search->lastName);
-            printf("\n ID: %d", search->id);
-            printf("\n age: %d", search->age);
-            printf("\n Phone number: %s", search->phone);
-            printf("\n Salary: %d", search->salary);
-            printf("\n\t\t-------------------\n");
-            return;
-        }
-        else
-        {
-            search = search->nextPtr;
-        }
-    }
-    printf("Id could not be found in the queue");
-}
-//SEARCH FUNCTION END
-//****************
-
 
 
