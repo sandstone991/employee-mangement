@@ -29,6 +29,7 @@ struct Node
 //Intializing two global pointer to a struct of type Node to act as out front and rear because they'll be used thoroughly
 struct Node *front = NULL;
 struct Node *rear = NULL;
+struct Node* searchingNode=NULL;
 //counter for counting employees throughout the program
 int counter = 0;
 
@@ -45,7 +46,7 @@ void display();
 void reset();
 bool searchByIdInQueue(int ID);
 bool isAlreadyInQueue(int ID);
-struct Node* bringMeTheEmployee(int ID);
+void bringMeTheEmployee(int ID);
 void modifyEmployee();
 //QUEUE FUNCTIONS DECLARATION SECTION END
 
@@ -369,12 +370,12 @@ printf("\nID: ");
 int id;
 scanf("%d",&id);
 if(searchByIdInQueue(id))
-{   struct Node *toBeModified = bringMeTheEmployee(id);
-    searchByIdInQueue(id);
+{
+    bringMeTheEmployee(id);
     printf("\n What do you want to modify\n");
     int flag=1;
     while(flag){
-    int choice=0;
+    int choice=1;
     printf("\n Press 1 to modify first name");
     printf("\n Press 2 to modify last name");
     printf("\n Press 3 to modify Salary");
@@ -382,61 +383,54 @@ if(searchByIdInQueue(id))
     printf("\n Press 5 to modify Age");
     printf("\n Press 6 to Exit to the previous menu");
     printf("\n Your choice: ");
-    scanf("%d",choice);
+    scanf("%d",&choice);
     switch(choice){
           case 1:
             printf("\nFirst name: ");
-            scanf("%19s", &toBeModified->firstName);
+            scanf("%19s", &searchingNode->firstName);
             puts("");
-
 
                 break;
             case 2:
             printf("\nLast name: ");
-            scanf("%19s", &toBeModified->lastName);
+            scanf("%19s", &searchingNode->lastName);
             puts("");
                 break;
             case 3:
             printf("\nSalary: ");
-            scanf("%d", &toBeModified->salary);
+            scanf("%d", &searchingNode->salary);
             puts("");
                 break;
 
             case 4:
             printf("\nPhone number: ");
-            scanf("%12s", &toBeModified->phone);
+            scanf("%12s", &searchingNode->phone);
             puts("");
 
                 break;
             case 5:
             printf("\nAge: ");
-            scanf("%d", &toBeModified->age);
+            scanf("%d", &searchingNode->age);
                 break;
             case 6:
                 flag=0;
                 break;
             default:
                 printf("\nPlease enter a valid number");
-                break;
-}
-}
-}
-else{
-    printf("\nEmployee was not found\n");
-}
-}
-struct Node* bringMeTheEmployee(int ID){
-struct Node *search = front;
-     while ( search != NULL ){
+                break;}}}
+                else{return;}}
+void bringMeTheEmployee(int ID){
+searchingNode = front;
+     while ( searchingNode != NULL ){
 
-        if ( search->id == ID ){
-                printf("\nThis ID has already been used please choose another one\n");
-                return search;
+        if ( searchingNode->id == ID ){
+                return;
         }
-        else
-        {return NULL;}
+          else
+        {searchingNode = searchingNode->nextPtr;}
+        }
+searchingNode=NULL;
      }
-};
 //QUEUE FUNCTIONS DEFINTION END
 
 //****************
@@ -563,4 +557,5 @@ void displayRecordContent(){
 }
 
 //FILE FUNCTIONS DEFINITON END
+
 
