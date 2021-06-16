@@ -67,7 +67,9 @@ void clearFile();
 //MISC FUNCTION DECLARATION START
 void displayMenu();
 //MISC FUNCTION DECLARATION END
-
+//CHECK IS INTEGER FUNCTIONS DECLARATION START
+int getIntegerOnly();
+//CHECK IS INTEGER FUNCTIONS DECLARATION END
 //******
 
 /***********************************************************************************************************************/
