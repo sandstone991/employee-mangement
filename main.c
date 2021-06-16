@@ -81,27 +81,7 @@ int main()
     int choice1;
     //Changes the console's color to green
     system("color 0a");
-    //FILE stuff
-
-    FILE *cfPtr;
-     // fopen() opens files "employees.txt". Exit program if unable to create/open file
-    //takes two parameters the first one is the name of the file and the second is the type of operation on the file
-    // in this case its "a" meaning Open or create a file for writing at the end of the file—i.e., write operations append data to the file.
-    //refer to "c how to program by dietel p480 for a refresher"
-    if ((cfPtr = fopen("employees.txt", "a")) == NULL)
-    {
-        puts("ERROR");
-        puts("File could not be opened.");
-    }
-    //this file pointer is used for reading unlike the previous one which was used for writing
-    FILE *rfPtr;
-    // fopen() opens files "employees.txt". Exit program if unable to open/access file
-    if ((rfPtr = fopen("employees.txt", "r")) == NULL)
-    {
-        puts("ERROR");
-        puts("File could not be opened.");
-    }
-
+   
 
         //for quitting the while loop underneath
         bool flag = 1;
@@ -471,7 +451,16 @@ void fileDisplayMenu()
     puts("");
 }
 void newRecord(FILE *fPtr)
-{
+{   
+     // fopen() opens files "employees.txt". Exit program if unable to create/open file
+    //takes two parameters the first one is the name of the file and the second is the type of operation on the file
+    // in this case its "a" meaning Open or create a file for writing at the end of the file—i.e., write operations append data to the file.
+    //refer to "c how to program by dietel p480 for a refresher"
+    if ((fPtr = fopen("employees.txt", "a")) == NULL)
+    {
+        puts("ERROR");
+        puts("File could not be opened.");
+    }
 
     //use the front of the queue to loop through the whole queue
     struct Node *current = front;
@@ -501,6 +490,7 @@ void newRecord(FILE *fPtr)
     }
     //use the counter to tell the user how many employees they've recorded into the file
     printf("\nA total of %d was recorded into the file", c2);
+    fclose(fPtr);
 }
 void clearFile()
 {
@@ -519,9 +509,17 @@ void clearFile()
         else{
         puts("File cleared successfully.");
     }
+    fclose(dfPtr);
 }
 void readFromRecord(FILE *fPtr)
-{
+{   
+    // fopen() opens files "employees.txt". Exit program if unable to open/access file
+    if ((fPtr = fopen("employees.txt", "r")) == NULL)
+    {
+        puts("ERROR");
+        puts("File could not be opened.");
+    }
+    
     //rewind function makes sure the pointer to the file is at the start of the file
     rewind(fPtr);
     int counter1=0;
@@ -555,6 +553,7 @@ void readFromRecord(FILE *fPtr)
 
     }
       printf("\nA total of %d Employees was copied from the file to the memory\n",counter1);
+      fclose(fPtr);
 }
 void displayRecordContent(){
     //this function takes a whole line from the employee's text document and prints it on the screen
