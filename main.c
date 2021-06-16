@@ -199,6 +199,7 @@ int isEmpty()
 void enqueue()
 {
     counter++;
+    int i=0;
     struct Node *newNode = malloc(sizeof(struct Node));
     newNode->nextPtr = NULL;
     printf("Enter Employee (%d) data :-\n", counter);
@@ -210,18 +211,19 @@ void enqueue()
     scanf("%19s", &newNode->lastName);
     puts("");
     do{
-    printf("ID: ");
-    scanf("%d", &newNode->id);}
+        printf("ID: ");
+        newNode->id = getIntegerOnly();
+    }
     while(isAlreadyInQueue(newNode->id));
     puts("");
     printf("Age: ");
-    scanf("%d", &newNode->age);
+        newNode->age = getIntegerOnly();
     puts("");
     printf("Phone number: ");
     scanf("%12s", &newNode->phone);
     puts("");
     printf("Salary: ");
-    scanf("%d", &newNode->salary);
+        newNode->salary = getIntegerOnly();
     puts("");
 
 
