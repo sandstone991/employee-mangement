@@ -584,7 +584,7 @@ int getIntegerOnly(){
         ch=getch();
         if (ch>=48 && ch<=57)
         {
-            printf("%c\n",ch);
+            printf("%c",ch);
             num=num*10 + (ch-48);
 
         }
