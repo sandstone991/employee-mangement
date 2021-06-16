@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <conio.h>
 #include <string.h>
+#include <ctype.h>
 #define SIZE 20
 /***********************************************************************************************************************/
 //Node struct
@@ -69,7 +70,7 @@ void clearFile();
 void displayMenu();
 //MISC FUNCTION DECLARATION END
 //CHECK IS INTEGER FUNCTIONS DECLARATION START
-int getIntegerOnly();
+int getIntegerOnly(int *px);
 //CHECK IS INTEGER FUNCTIONS DECLARATION END
 //******
 
@@ -201,18 +202,21 @@ void enqueue()
     puts("");
     do{
         printf("ID: ");
-        newNode->id = getIntegerOnly();
+        getIntegerOnly(&newNode->id);
+        fflush(stdin);
     }
     while(isAlreadyInQueue(newNode->id));
     puts("");
     printf("Age: ");
-        newNode->age = getIntegerOnly();
+        getIntegerOnly(&newNode->age);
+        fflush(stdin);
     puts("");
     printf("Phone number: ");
     scanf("%12s", &newNode->phone);
     puts("");
     printf("Salary: ");
-        newNode->salary = getIntegerOnly();
+        getIntegerOnly(&newNode->salary);
+        fflush(stdin);
     puts("");
 
 
@@ -362,7 +366,7 @@ void modifyEmployee(){
     printf("\nPlease enter the employee's ID");
     printf("\nID: ");
     int id;
-        id = getIntegerOnly();
+        getIntegerOnly(&id);
         fflush(stdin);
     if(searchByIdInQueue(id))
     {   
@@ -393,7 +397,8 @@ void modifyEmployee(){
                     break;
                 case 3:
                 printf("\nSalary: ");
-                    searchingNode->salary = getIntegerOnly();
+                getIntegerOnly(&searchingNode->salary);
+                fflush(stdin);
                 puts("");
                     break;
                 case 4:
@@ -403,7 +408,8 @@ void modifyEmployee(){
                     break;
                 case 5:
                 printf("\nAge: ");
-                    searchingNode->age = getIntegerOnly();
+                    getIntegerOnly(&searchingNode->age);
+                    fflush(stdin);
                     break;
                 case 6:
                     flag=0;
@@ -646,25 +652,16 @@ void displayRecordContent(){
 
 //FILE FUNCTIONS DEFINITON END
 //getIntegerOnly FUNCTIONS DEFINITON START
-int getIntegerOnly(){
-    int num=0,ch;
-    do{
-        ch=getch();
-        if (ch>=48 && ch<=57)
-        {
-            printf("%c",ch);
-            num=num*10 + (ch-48);
-
-        }
-        if (ch==13)
-        {
-            break;
-        }
-    }while (1);  
-    puts(" ");
-    return num;
-    
+int getIntegerOnly(int *px){
+char userInput[64];
+    fgets((char *)px,1,stdin);
+    while (1){
+      if(!scanf("%d",px)&& !isspace(*px)&& fgets(userInput,63,stdin) != "\n"){
+          printf("Please enter an integer value:");
+      } 
+      else{
+        break;
+    }
+  }
 }
 //getIntegerOnly FUNCTIONS DEFINITON END
-
-
